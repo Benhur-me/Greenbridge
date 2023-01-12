@@ -1,0 +1,112 @@
+<?php
+    $error = array();
+    $firstName=$lastName=$email=$password1=$password2= "";
+    $conn = mysqli_connect("localhost","root","","mydatabase");
+	if(!$conn){
+		echo "<script>alert('Oop! Database connection failed')</script>";
+	}
+    if(isset($_POST['signup_btn'])){
+        $firstName = testInput($_POST['firstName']);
+        $lastName = testInput($_POST['lastName']);
+        $email = testInput($_POST['email']);
+        $password1 = testInput($_POST['password1']);
+        $password2 = testInput($_POST['password2']); 
+        
+        if(empty($firstName)){
+            array_push($error, "First name is required");
+        }
+        if(empty($lastName)){
+            array_push($error, "Last name is required");
+        }
+        if(empty($email)){
+            array_push($error, "email is required");
+        }
+        if(empty($password1) || empty($password2)){
+            array_push($error, "Both passwords are required");
+        }
+        if($password1 != $password2){
+            array_push($error, "Passwords are not the same");
+        }
+		
+		$dquery = "SELECT * FROM users where email='$email'";
+		$dresult = mysqli_query($conn,$dquery);
+		if(mysqli_num_rows($dresult) > 0){
+			array_push($error, "User already exist!");
+		}
+        
+        if(count($error) == 0){
+			$password = $password1;
+			$query="INSERT INTO users(firstName,lastName,email,password) 
+			VALUES('$firstName','$lastName','$email','$password')";
+			if(mysqli_query($conn, $query)){
+				header("location:index.php");
+			}
+			
+			
+        }
+        
+    }
+    
+    function printError($error){
+        echo "<h3 style='color:red;'>";
+        foreach($error as $value){
+            echo $value ."<br>";
+        }
+        echo "</h3>";
+    }
+    function testInput($data){
+        $data = trim($data);
+        $data = stripcslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navegation bar: Starts -->
+    <?php include('header.php'); ?>
+    <!-- Navegation bar: Stops -->
+	
+    <div class="container">
+        <div class="title">
+            <h1>Signup</h1>
+        </div>
+		
+		<!-- <fieldset align="center" style="padding:20px;">
+			<legend>register</legend> -->
+            <div align="center">
+                <?php if(isset($error)){printError($error);} ?>
+            <form action="signup.php" method="post" >
+                <label>First Name:</label>
+                <input type="text" name="firstName" placeholder="Enter first name"><br><br>
+                <label>Last Name:</label>
+                <input type="text" name="lastName" placeholder="Enter last name"><br><br>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="Enter email"><br><br>
+                <label>Password</label>
+                <input type="password" name="password1" placeholder="Enter password"><br><br>
+                <label>Confirm Password</label>
+                <input type="password" name="password2" placeholder="Confirm password"><br><br>
+                <input type="submit" value="Submit" name="signup_btn">
+                <input type="reset" value="Reset">
+            </form>
+            <h3>Already a member <a href="login.php">login</a></h3>
+            </div>
+			
+		<!-- </fieldset> -->
+
+    </div>
+
+    <!-- Footer: starts -->
+    <?php include('footer.php');  ?>
+    <!-- Footer: stops -->
+</body>
+</html>

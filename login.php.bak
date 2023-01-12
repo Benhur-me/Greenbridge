@@ -1,0 +1,93 @@
+<?php
+    $error = array();
+    $email = $password = "";
+	$conn = mysqli_connect("localhost","root","","mydatabase");
+	if(!$conn){
+		echo "<script>alert('Oop! Database connection failed')</script>";
+	}
+    if(isset($_POST['login_btn'])){
+        $email = testInput($_POST['email']);
+        $password = testInput($_POST['password']); 
+        
+        if(empty($email)){
+            array_push($error, "email is required");
+        }
+        if(empty($password)){
+            array_push($error, "Password is required");
+        }
+        
+        if(count($error) == 0){
+			$password = md5($password);
+			$query = "SELECT * FROM users where email='$email' AND password='$password'";
+			$result = mysqli_query($conn,$query);
+			if(mysqli_num_rows($result) > 0){
+				echo "<script>alert('Login successfull')</script>";
+				header("location:index.php");
+			}
+        }
+        
+    }
+    
+    function printError($error){
+        echo "<h3 style='color:red;'>";
+        foreach($error as $value){
+            echo $value ."<br>";
+        }
+        echo "</h3>";
+    }
+    function testInput($data){
+        $data = trim($data);
+        $data = stripcslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navegation bar: Starts -->
+    <?php include('header.php'); ?>
+    <!-- Navegation bar: Stops -->
+	
+    <div class="container">
+        <div class="title">
+            <h1>Login</h1>
+        </div>
+		
+		<!-- <fieldset align="center" style="padding:20px;">
+			<legend>Login</legend> -->
+            <div align="center">
+
+                    <?php 
+                        if(isset($error)){
+                            printError($error);
+                        }
+                    ?>
+                <form action="login.php" method="post">
+                    <label>Email:</label>
+                    <input type="email" name="email"><br><br>
+                    <label>Password:</label>
+                    <input type="password" name="password"><br><br>
+                    <input type="submit" value="Submit" name="login_btn">
+                    <input type="reset" value="Reset">
+                </form>
+                <h3>Not yet a member <a href="signUp.php">Signup</a></h3>
+                <!-- </fieldset> -->
+
+            </div>
+			
+
+    </div>
+
+    <!-- Footer: starts -->
+    <?php include('footer.php');  ?>
+    <!-- Footer: stops -->
+</body>
+</html>

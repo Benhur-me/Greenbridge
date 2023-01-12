@@ -1,0 +1,119 @@
+body{
+    margin: 0px;
+    background-color: #eee;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    background-color: blue;
+    padding: 10px 15px;
+    position: fixed;
+    width:100%;
+    top:0;
+}
+.header .logo img{
+    width:60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+.header .nav-bar{
+    margin-right: 15px;
+}
+.header .nav-bar ul{
+    display: flex;
+    list-style: none;
+}
+.header .nav-bar ul li a{
+    color:whitesmoke;
+    text-decoration: none;
+    margin-right: 5px;
+    font-size: 25px;
+    padding: 0px 5px;
+    font-weight: bolder;
+}
+.header .nav-bar ul li a:hover{
+    color: gold;
+}
+.active{
+    color:gold;
+}
+.container .title img{
+    width:100%;
+}
+.container .title{
+    text-align: center;
+    color: blue;
+    font-size: 50px;
+    padding: 10px 0px;
+    text-shadow: 4px 4px 5px black;
+}
+.section{
+    display: flex;
+    justify-content: space-around;
+}
+.section div img{
+	width:100%;
+    margin-right: 10px;
+}
+.section div{
+    margin:5px;
+    box-shadow: 2px 2px 5px gray;
+}
+.section div p{
+	text-align: center;
+    padding: 0px 5px;
+	font-weight: bolder;
+}
+#species-title{
+    text-align: center;
+    font-weight: bolder;
+    font-size: 25px;
+}
+
+.footer{
+    margin-top: 20px;
+    background-color: blue;
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 5px;
+}
+.footer h3{
+    color: gold;
+    font-weight: bolder;
+    font-size: 25px;
+}
+.footer div ul li{
+    list-style: none;
+    color:white;
+}
+.container{
+    padding: 25px 10px;
+    margin-top: 30px;
+}
+
+@media screen and (max-width:760px) {
+    .header{
+        display: block;
+    }
+    .header .nav-bar ul{
+        display: block;
+        padding-left: 0px;
+    }
+    .header .nav-bar ul li a{
+        font-size: 18px;
+    }
+    .container .title h1{
+        font-size: 40px;
+        margin-top: 140px;
+        padding: 25px 0px;
+        text-shadow: 2px 2px 1px rgb(69, 69, 69);
+    }
+    .section{
+        display: block;
+    }
+    .footer{
+        display: block;
+        text-align: center;
+    }
+}
